@@ -1,8 +1,5 @@
 import requests as re
-import json
 import csv
-import os
-
 
 class PokeParser():
     
@@ -17,8 +14,7 @@ class PokeParser():
         url = 'https://pokeapi.co/api/v2/pokemon/' + self.name
         result = re.get(url)
 
-        data = result.text
-        parse_json = json.loads(data)
+        parse_json = result.json()
 
 
         abilities = parse_json.get('abilities')
@@ -61,8 +57,7 @@ class PokeParser():
         tags = list(datalist.keys())
         with open ('pokeparser.csv', 'a', newline ='') as new_csv:
             csv_writer = csv.DictWriter(new_csv,fieldnames=tags)
-            # csv_writer.writeheader()
-            # header for csv
+            
 
             csv_writer.writerow(datalist)
                 
@@ -77,8 +72,7 @@ class PokeParser():
 
 
 
-# # refreshes csv file
-# os.remove('pokeparser.csv')
+
 
 
 
