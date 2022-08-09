@@ -1,15 +1,16 @@
 import requests as re
 import json
- 
-
+import csv
+import os
 
 
 class PokeParser():
     
+    
     def __init__(self,name):
         self.name = name
         
-
+    
     def pokedata(self):
         url = 'https://pokeapi.co/api/v2/pokemon/' + self.name
         result = re.get(url)
@@ -48,15 +49,39 @@ class PokeParser():
             statdict.update({staginglist.pop('name') : stats[i].pop('base_stat')})
             
         datalist.update({'stats': statdict})
-        
         return datalist
-       
-   
-
-    def poke_csv(self):
-        pass
         
+       
+    def poke_csv(self):
+        datalist = self.pokedata()
+ 
+        
+        tags = list(datalist.keys())
+        with open ('pokeparser.csv', 'a', newline ='') as new_csv:
+            csv_writer = csv.DictWriter(new_csv,fieldnames=tags)
+            # csv_writer.writeheader()
+            # header for csv
+
+            csv_writer.writerow(datalist)
+                
+
+    def poke_print(self,value):
+        self.value = value
+        datalist = self.pokedata()
+        return datalist.get(self.value)
+
+
+
+
+
+# # refreshes csv file
+# os.remove('pokeparser.csv')
+
+
 
 p1 = PokeParser('charizard')
 p3 = PokeParser('unown')
-print(p3.pokedata())
+
+
+p4 = PokeParser('snorlax')
+print(p4.poke_print('types'))
