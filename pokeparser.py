@@ -1,7 +1,7 @@
 import requests as re
 import csv
 
-class PokeParser():
+class PokeScrapper():
     
     
     def __init__(self,name):
@@ -11,7 +11,7 @@ class PokeParser():
         
     
     def get_poke_data(self):
-        url = 'https://pokeapi.co/api/v2/pokemon/' + self.name
+        url = 'https://pokeapi.co/api/v2/pokemon/' + str(self.name)
         result = re.get(url)
 
         parse_json = result.json()
@@ -68,20 +68,12 @@ class PokeParser():
         return self.datalist.get(value)
 
 
+n=1
+while n < 906:
+    p1 = PokeScrapper(n)
+    p1.poke_csv()
+    print(n)
+    n+=1
 
 
-
-
-
-
-
-
-p1 = PokeParser('charizard')
-p3 = PokeParser('unown')
-
-
-p4 = PokeParser('snorlax')
-p7 = PokeParser('suicune')
-
-print(p1.poke_print('types'))
-print(p7.poke_print('types'))
+# 
