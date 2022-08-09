@@ -9,9 +9,11 @@ class PokeParser():
     
     def __init__(self,name):
         self.name = name
+        self.datalist = {}
+        self.get_poke_data()
         
     
-    def pokedata(self):
+    def get_poke_data(self):
         url = 'https://pokeapi.co/api/v2/pokemon/' + self.name
         result = re.get(url)
 
@@ -24,37 +26,37 @@ class PokeParser():
         types = parse_json['types']
         stats = parse_json['stats']
 
-        datalist={}
+        
 
-        datalist.update({'name': name})
+        self.datalist.update({'name': name})
 
 
         typelist=[]
         for i in range(len(types)):
-            staginglist = types[i].pop('type')
-            typelist.append(staginglist.pop('name'))
-        datalist.update({'types' : typelist})
+            staginglist = types[i]['type']
+            typelist.append(staginglist['name'])
+        self.datalist.update({'types' : typelist})
             
         abillist = []
 
         for i in range(len(abilities)):
-            staginglist = abilities[i].pop('ability')
-            abillist.append(staginglist.pop('name'))
-        datalist.update({'abilities' :abillist})
+            staginglist = abilities[i]['ability']
+            abillist.append(staginglist['name'])
+        self.datalist.update({'abilities' :abillist})
 
         statdict = {}
 
         for i in range(len(stats)):
-            staginglist = stats[i].pop('stat')
-            statdict.update({staginglist.pop('name') : stats[i].pop('base_stat')})
+            staginglist = stats[i]['stat']
+            statdict.update({staginglist['name'] : stats[i]['base_stat']})
             
-        datalist.update({'stats': statdict})
-        return datalist
+        self.datalist.update({'stats': statdict})
+        return self.datalist
         
        
     def poke_csv(self):
-        datalist = self.pokedata()
- 
+        
+        datalist = self.datalist
         
         tags = list(datalist.keys())
         with open ('pokeparser.csv', 'a', newline ='') as new_csv:
@@ -66,9 +68,10 @@ class PokeParser():
                 
 
     def poke_print(self,value):
-        self.value = value
-        datalist = self.pokedata()
-        return datalist.get(self.value)
+        
+        
+        return self.datalist.get(value)
+
 
 
 
@@ -84,4 +87,7 @@ p3 = PokeParser('unown')
 
 
 p4 = PokeParser('snorlax')
-print(p4.poke_print('types'))
+p7 = PokeParser('suicune')
+
+print(p1.poke_print('types'))
+print(p7.poke_print('types'))
