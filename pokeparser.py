@@ -67,14 +67,6 @@ class PokeScrapper():
         return self.datalist.get(value)
 
 
-n=1
-while n < 10:
-    p1 = PokeScrapper(n)
-    p1.poke_csv()
-    print(n)
-    n+=1
-
-
 
 class PokeParser():
 
@@ -113,17 +105,28 @@ class PokeParser():
                 if int(pokemon[list[0]]) >= list[1]:
                     self.statlist.append(pokemon)
                      
-    def type_ability_checker(self,list1,list2):
+    def cross_checker(self,list1,list2):
+        crosscheckerlist = []
         for pokemon in list1:
             for pokemon2 in list2:
                 if pokemon == pokemon2:
-                    self.crosschecker.append(pokemon)
+                    crosscheckerlist.append(pokemon)
+        self.crosschecker = crosscheckerlist.copy()
+# n=1
+# while n < 10:
+#     p1 = PokeScrapper(n)
+#     p1.poke_csv()
+#     print(n)
+#     n+=1
+
 
 
 p1 = PokeParser()
-p1.ability_checker('blaze')
-p1.type_checker('dragon')
+p1.ability_checker('pressure')
+p1.type_checker('fire')
 
-p1.stat_checker(['attack',120])
-p1.type_ability_checker(p1.statlist,p1.typelist)
+p1.stat_checker(['special-attack',120])
+p1.cross_checker(p1.abilitylist,p1.typelist)
+
+p1.cross_checker(p1.crosschecker,p1.statlist)
 print(p1.crosschecker)
